@@ -1,0 +1,71 @@
+#!/bin/bash
+
+SCRIPT=$(readlink -f "$0")
+SCRIPT_PATH=$(dirname "$SCRIPT")
+SAMPLE_DESKTOP_FILE="$SCRIPT_PATH/desktopSample.desktop"
+DESKTOP_FILES_PATH="~/.local/share/applications/"
+FILE_NAME=$1
+DESTINATION=$2
+
+check_file_name() {
+	if [ -z "$FILE_NAME" ] 
+	then 
+		echo "Error: please select a file to extract"
+		exit 1
+	fi
+}
+
+check_destination() {
+	if [ -z "$DESTINATION" ] 
+	then
+		DESTINATION="/opt"
+	fi
+}
+
+extract_file() {
+	echo "Extracting $FILE_NAME to $DESTINATION..."
+	cd $DESTINATION
+	sudo tar xf $FILE_NAME
+	APPDIRECTORY=$(ls -t $DESTINATION | head -1)
+	echo "Finished extraction in $DESTINATION/$APPDIRECTORY"
+}
+
+copy_desktop_file () {
+	cp $SAMPLE_DESKTOP_FILE ~/.local/share/applications/$APPDIRECTORY.desktop
+	echo "Created desktop file in $DESKTOP_FILES_PATH"
+}
+
+search_starting_script () {
+	echo "`ls $APPDIRECTORY/bin`"
+	read -p "Pick the executable file to use for the desktop file: " EXECUTABLE
+	echo "$EXECUTABLE" 	
+}
+
+search_icons () {
+	echo "`find $APPDIRECTORY -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.svg \)`"
+	read -p "Pick the icon path to use for the desktop file: " ICON
+	echo "$ICON"
+}
+
+replace_desktop_variables () {
+	sed -i "s/"{appName}"/"$APPDIRECTORY"/g" ~/.local/share/applications/$APPDIRECTORY.desktop
+	sed -i "s#"{executableDir}"#"$EXECUTABLELOC"#g" ~/.local/share/applications/$APPDIRECTORY.desktop
+	sed -i "s#"{iconPath}"#"$ICONLOC"#g" ~/.local/share/applications/$APPDIRECTORY.desktop
+}
+
+create_desktop_file() {
+	echo "Creating desktop file..."
+	copy_desktop_file
+	search_starting_script
+	search_icons
+	EXECUTABLELOC="$DESTINATION/$APPDIRECTORY/bin/$EXECUTABLE"
+	ICONLOC="$DESTINATION/$ICON"
+	replace_desktop_variables
+}
+
+check_file_name
+FILE_NAME="`pwd`/$1"
+check_destination
+extract_file
+create_desktop_file
+echo "Done. Bye." 
