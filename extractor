@@ -31,7 +31,7 @@ extract_file() {
 }
 
 copy_desktop_file () {
-	cp $SAMPLE_DESKTOP_FILE$HOME/.local/share/applications/$APPDIRECTORY.desktop
+	cp $SAMPLE_DESKTOP_FILE $HOME/.local/share/applications/$APPDIRECTORY.desktop
 	echo "Created desktop file in $DESKTOP_FILES_PATH"
 }
 
