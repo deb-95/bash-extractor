@@ -3,7 +3,7 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT")
 SAMPLE_DESKTOP_FILE="$SCRIPT_PATH/desktopSample.desktop"
-DESKTOP_FILES_PATH="~/.local/share/applications/"
+DESKTOP_FILES_PATH="$HOME/.local/share/applications/"
 FILE_NAME=$1
 DESTINATION=$2
 
