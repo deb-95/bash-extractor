@@ -31,26 +31,24 @@ extract_file() {
 }
 
 copy_desktop_file () {
-	cp $SAMPLE_DESKTOP_FILE ~/.local/share/applications/$APPDIRECTORY.desktop
+	cp $SAMPLE_DESKTOP_FILE$HOME/.local/share/applications/$APPDIRECTORY.desktop
 	echo "Created desktop file in $DESKTOP_FILES_PATH"
 }
 
 search_starting_script () {
 	echo "`ls $APPDIRECTORY/bin`"
 	read -p "Pick the executable file to use for the desktop file: " EXECUTABLE
-	echo "$EXECUTABLE" 	
 }
 
 search_icons () {
 	echo "`find $APPDIRECTORY -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.svg \)`"
 	read -p "Pick the icon path to use for the desktop file: " ICON
-	echo "$ICON"
 }
 
 replace_desktop_variables () {
-	sed -i "s/"{appName}"/"$APPDIRECTORY"/g" ~/.local/share/applications/$APPDIRECTORY.desktop
-	sed -i "s#"{executableDir}"#"$EXECUTABLELOC"#g" ~/.local/share/applications/$APPDIRECTORY.desktop
-	sed -i "s#"{iconPath}"#"$ICONLOC"#g" ~/.local/share/applications/$APPDIRECTORY.desktop
+	sed -i "s/"{appName}"/"$APPDIRECTORY"/g"$HOME/.local/share/applications/$APPDIRECTORY.desktop
+	sed -i "s#"{executableDir}"#"$EXECUTABLELOC"#g"$HOME/.local/share/applications/$APPDIRECTORY.desktop
+	sed -i "s#"{iconPath}"#"$ICONLOC"#g"$HOME/.local/share/applications/$APPDIRECTORY.desktop
 }
 
 create_desktop_file() {
