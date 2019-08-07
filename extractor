@@ -26,7 +26,7 @@ extract_file() {
 	echo "Extracting $FILE_NAME to $DESTINATION..."
 	cd $DESTINATION
 	sudo tar xf $FILE_NAME
-	APPDIRECTORY=$(ls -t $DESTINATION | head -1)
+	APPDIRECTORY=`tar -tf $FILE_NAME | head -1 | cut -f1 -d"/"`
 	echo "Finished extraction in $DESTINATION/$APPDIRECTORY"
 }
 
@@ -46,9 +46,9 @@ search_icons () {
 }
 
 replace_desktop_variables () {
-	sed -i "s/"{appName}"/"$APPDIRECTORY"/g"$HOME/.local/share/applications/$APPDIRECTORY.desktop
-	sed -i "s#"{executableDir}"#"$EXECUTABLELOC"#g"$HOME/.local/share/applications/$APPDIRECTORY.desktop
-	sed -i "s#"{iconPath}"#"$ICONLOC"#g"$HOME/.local/share/applications/$APPDIRECTORY.desktop
+	sed -i "s#"{appName}"#"$APPDIRECTORY"#g" $HOME/.local/share/applications/$APPDIRECTORY.desktop
+	sed -i "s#"{executableDir}"#"$EXECUTABLELOC"#g" $HOME/.local/share/applications/$APPDIRECTORY.desktop
+	sed -i "s#"{iconPath}"#"$ICONLOC"#g" $HOME/.local/share/applications/$APPDIRECTORY.desktop
 }
 
 create_desktop_file() {
